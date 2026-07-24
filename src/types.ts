@@ -43,5 +43,5 @@ export type Command = SlashCommand | ContextCommand;
 export interface BotEvent<T extends keyof ClientEvents> {
   name: T;
   once?: boolean;
-  execute: (...args: ClientEvents[T]) => Promise<void>;
+  execute: (client: BotClient, ...args: ClientEvents[T]) => Promise<void>;
 }
