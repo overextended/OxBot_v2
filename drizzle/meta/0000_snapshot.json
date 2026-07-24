@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "e34a85ca-74f1-4cd6-9f91-54bc07c359c6",
+  "id": "a23d6ba5-06fd-4d43-aaaa-c703624753bd",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "bans": {
@@ -61,6 +61,19 @@
         }
       },
       "foreignKeys": {
+        "bans_issuer_id_users_id_fk": {
+          "name": "bans_issuer_id_users_id_fk",
+          "tableFrom": "bans",
+          "tableTo": "users",
+          "columnsFrom": [
+            "issuer_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        },
         "bans_target_id_users_id_fk": {
           "name": "bans_target_id_users_id_fk",
           "tableFrom": "bans",
@@ -88,22 +101,6 @@
           "primaryKey": true,
           "notNull": true,
           "autoincrement": false
-        },
-        "warns": {
-          "name": "warns",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": 0
-        },
-        "timeouts": {
-          "name": "timeouts",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": 0
         },
         "joined_at": {
           "name": "joined_at",
@@ -177,6 +174,19 @@
         }
       },
       "foreignKeys": {
+        "warns_issuer_id_users_id_fk": {
+          "name": "warns_issuer_id_users_id_fk",
+          "tableFrom": "warns",
+          "tableTo": "users",
+          "columnsFrom": [
+            "issuer_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        },
         "warns_target_id_users_id_fk": {
           "name": "warns_target_id_users_id_fk",
           "tableFrom": "warns",
