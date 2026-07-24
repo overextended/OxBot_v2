@@ -3,8 +3,6 @@ import { integer, text, sqliteTable, index } from 'drizzle-orm/sqlite-core';
 
 export const usersTable = sqliteTable('users', {
   id: text({ length: 20 }).primaryKey(),
-  warns: integer().default(0).notNull(),
-  timeouts: integer().default(0).notNull(),
   joinedAt: integer('joined_at', { mode: 'timestamp' })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
@@ -15,7 +13,9 @@ export const bansTable = sqliteTable(
   {
     id: integer().primaryKey({ autoIncrement: true }),
     reason: text().notNull(),
-    issuerId: text('issuer_id', { length: 20 }).notNull(),
+    issuerId: text('issuer_id', { length: 20 })
+      .notNull()
+      .references(() => usersTable.id, { onDelete: 'restrict', onUpdate: 'cascade' }),
     targetId: text('target_id', { length: 20 })
       .notNull()
       .references(() => usersTable.id, { onDelete: 'restrict', onUpdate: 'cascade' }),
@@ -31,7 +31,9 @@ export const warnsTable = sqliteTable(
   {
     id: integer().primaryKey({ autoIncrement: true }),
     reason: text().notNull(),
-    issuerId: text('issuer_id', { length: 20 }).notNull(),
+    issuerId: text('issuer_id', { length: 20 })
+      .notNull()
+      .references(() => usersTable.id, { onDelete: 'restrict', onUpdate: 'cascade' }),
     targetId: text('target_id', { length: 20 })
       .notNull()
       .references(() => usersTable.id, { onDelete: 'restrict', onUpdate: 'cascade' }),
