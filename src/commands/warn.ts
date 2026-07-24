@@ -67,7 +67,8 @@ export default {
         : '\n*Note: User is not in the server, but the warning was logged to their profile.*';
 
       await interaction.reply({
-        content: `<@${offender.id}> has been **warned**. Reason: *${reason}*.\n` +
+        content:
+          `<@${offender.id}> has been **warned**. Reason: *${reason}*.\n` +
           `Timeout applied: **${duration}m**.${memberStatus}`,
         flags: MessageFlags.Ephemeral,
       });

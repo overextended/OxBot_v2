@@ -17,7 +17,7 @@ export default {
     ),
 
   execute: async (interaction, client) => {
-    const { guild, options, user: author } = interaction
+    const { guild, options, user: author } = interaction;
     if (!guild) {
       await interaction.reply({ content: 'This command can only be used in a guild.', flags: MessageFlags.Ephemeral });
       return;
@@ -44,7 +44,9 @@ export default {
 
       await interaction.reply({ content: `<@${offender.id}> has been **banned**. Reason: ${reason}` });
 
-      logger.info(`[Command Ban] ${offender.username} (${offender.id}) was banned by ${author.username} (${author.id})`)
+      logger.info(
+        `[Command Ban] ${offender.username} (${offender.id}) was banned by ${author.username} (${author.id})`,
+      );
     } catch (error) {
       logger.error('[Command Ban] Failed to execute ban', error);
       await interaction.reply({

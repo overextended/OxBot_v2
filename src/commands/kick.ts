@@ -14,7 +14,7 @@ export default {
     .addStringOption((o) => o.setName('reason').setDescription('The reason for the kick').setRequired(false)),
 
   execute: async (interaction, client) => {
-    const { guild, options, user: author } = interaction
+    const { guild, options, user: author } = interaction;
     if (!guild) {
       await interaction.reply({ content: 'This command can only be used in a guild.', flags: MessageFlags.Ephemeral });
       return;
@@ -38,7 +38,9 @@ export default {
 
       await interaction.reply({ content: `<@${offender.id}> has been **kicked**. Reason: ${reason}` });
 
-      logger.info(`[Command Kick] ${offender.username} (${offender.id}) was kicked by ${author.username} (${author.id})`)
+      logger.info(
+        `[Command Kick] ${offender.username} (${offender.id}) was kicked by ${author.username} (${author.id})`,
+      );
     } catch (error) {
       logger.error('[Command Kick] Failed to execute kick', error);
       await interaction.reply({

@@ -27,9 +27,9 @@ export default {
       logger.error(err);
 
       if (!interaction.replied)
-      interaction.reply({
-        content: `An error occured:\n> ${(err as Error).message}`,
-      });
+        interaction.reply({
+          content: `An error occured:\n> ${(err as Error).message}`,
+        });
     }
   },
 } satisfies BotEvent<'interactionCreate'>;
