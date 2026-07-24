@@ -3,6 +3,7 @@ import { bansTable, kicksTable, usersTable, warnsTable } from './schema';
 
 export const userRelations = relations(usersTable, ({ many }) => ({
   bans: many(bansTable),
+  kicks: many(kicksTable),
   warns: many(warnsTable),
 }));
 
