@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nub watch src/index.ts",
     "start": "nub src/index.ts",
-    "db": "drizzle-kit",
+    "db:seed": "nub src/db/seed.ts",
     "typecheck": "nubx tsc --noEmit",
     "format": "nubx prettier --write \"src/**/*.ts\"",
     "lint": "nubx oxlint src"
