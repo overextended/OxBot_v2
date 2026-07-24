@@ -38,7 +38,7 @@ export const kicksTable = sqliteTable(
       .notNull()
       .references(() => usersTable.id, { onDelete: 'restrict', onUpdate: 'cascade' }),
     issuedAt: integer('issued_at', { mode: 'timestamp' })
-      .default(sql`CURRENT_TIMESTAMP`)
+      .default(sql`(unixepoch())`)
       .notNull(),
   },
   (t) => [index('idx_kicks_targetid').on(t.targetId), index('idx_kicks_issuerid').on(t.issuerId)],
