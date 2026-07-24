@@ -20,7 +20,7 @@ export const bansTable = sqliteTable(
       .notNull()
       .references(() => usersTable.id, { onDelete: 'restrict', onUpdate: 'cascade' }),
     issuedAt: integer('issued_at', { mode: 'timestamp' })
-      .default(sql`CURRENT_TIMESTAMP`)
+      .default(sql`(unixepoch())`)
       .notNull(),
   },
   (t) => [index('idx_bans_targetid').on(t.targetId), index('idx_bans_issuerid').on(t.issuerId)],
@@ -38,7 +38,7 @@ export const warnsTable = sqliteTable(
       .notNull()
       .references(() => usersTable.id, { onDelete: 'restrict', onUpdate: 'cascade' }),
     issuedAt: integer('issued_at', { mode: 'timestamp' })
-      .default(sql`CURRENT_TIMESTAMP`)
+      .default(sql`(unixepoch())`)
       .notNull(),
   },
   (t) => [index('idx_warns_targetid').on(t.targetId), index('idx_warns_issuerid').on(t.issuerId)],

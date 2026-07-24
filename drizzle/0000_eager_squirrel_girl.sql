@@ -3,7 +3,7 @@ CREATE TABLE `bans` (
 	`reason` text NOT NULL,
 	`issuer_id` text(20) NOT NULL,
 	`target_id` text(20) NOT NULL,
-	`issued_at` integer DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	`issued_at` integer DEFAULT (unixepoch()) NOT NULL,
 	FOREIGN KEY (`issuer_id`) REFERENCES `users`(`id`) ON UPDATE cascade ON DELETE restrict,
 	FOREIGN KEY (`target_id`) REFERENCES `users`(`id`) ON UPDATE cascade ON DELETE restrict
 );
@@ -20,7 +20,7 @@ CREATE TABLE `warns` (
 	`reason` text NOT NULL,
 	`issuer_id` text(20) NOT NULL,
 	`target_id` text(20) NOT NULL,
-	`issued_at` integer DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	`issued_at` integer DEFAULT (unixepoch()) NOT NULL,
 	FOREIGN KEY (`issuer_id`) REFERENCES `users`(`id`) ON UPDATE cascade ON DELETE restrict,
 	FOREIGN KEY (`target_id`) REFERENCES `users`(`id`) ON UPDATE cascade ON DELETE restrict
 );
