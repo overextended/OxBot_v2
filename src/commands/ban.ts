@@ -1,0 +1,56 @@
+import { MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import type { Command } from '@/types';
+import { logger } from '@/utils/logger';
+import { db } from '@/db';
+import { bansTable } from '@/db/schema';
+import { checkUserIsLogged } from '@/utils/checks';
+
+export default {
+  data: new SlashCommandBuilder()
+    .setName('ban')
+    .setDescription('Ban a user from the server')
+    .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
+    .addUserOption((o) => o.setName('user').setDescription('The user to ban').setRequired(true))
+    .addStringOption((o) => o.setName('reason').setDescription('The reason for the ban').setRequired(false))
+    .addIntegerOption((o) =>
+      o.setName('delete_message_days').setDescription('Number of days to delete messages for (0-7)').setRequired(false),
+    ),
+
+  execute: async (interaction, client) => {
+    const { guild, options, user: author } = interaction
+    if (!guild) {
+      await interaction.reply({ content: 'This command can only be used in a guild.', flags: MessageFlags.Ephemeral });
+      return;
+    }
+
+    const offender = options.getUser('user', true);
+    const reasonOption = options.getString('reason');
+    const deleteMessageDaysOption = options.getInteger('delete_message_days');
+
+    const reason = (reasonOption as string) || 'No reason provided';
+    const deleteMessageDays = deleteMessageDaysOption || 0;
+
+    try {
+      await guild.members.ban(offender, { reason, deleteMessageDays: deleteMessageDays * 24 * 60 * 60 });
+
+      await checkUserIsLogged(client, offender);
+      await checkUserIsLogged(client, author);
+
+      await db.insert(bansTable).values({
+        reason: reason,
+        issuerId: author.id,
+        targetId: offender.id,
+      });
+
+      await interaction.reply({ content: `<@${offender.id}> has been **banned**. Reason: ${reason}` });
+
+      logger.info(`[Command Ban] ${offender.username} (${offender.id}) was banned by ${author.username} (${author.id})`)
+    } catch (error) {
+      logger.error('[Command Ban] Failed to execute ban', error);
+      await interaction.reply({
+        content: 'An error occurred while processing the ban.',
+        flags: MessageFlags.Ephemeral,
+      });
+    }
+  },
+} satisfies Command;
