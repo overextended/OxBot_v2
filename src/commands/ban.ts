@@ -33,8 +33,8 @@ export default {
     try {
       await guild.members.ban(offender, { reason, deleteMessageDays: deleteMessageDays * 24 * 60 * 60 });
 
-      await checkUserIsLogged(client, offender);
-      await checkUserIsLogged(client, author);
+      await checkUserIsLogged({ client, user: offender });
+      await checkUserIsLogged({ client, user: author });
 
       await db.insert(bansTable).values({
         reason: reason,

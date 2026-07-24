@@ -1,30 +1,41 @@
-import { User } from 'discord.js';
+import { GuildMember, User } from 'discord.js';
 import { eq } from 'drizzle-orm';
 import { BotClient } from '@/client';
 import { db } from '@/db';
 import { usersTable } from '@/db/schema';
 import { env } from '@/env';
 
-export async function checkUserIsLogged(client: BotClient, user: User) {
-  const exists = db
-    .select({
-      id: usersTable.id,
-    })
-    .from(usersTable)
-    .where(eq(usersTable.id, user.id))
-    .get();
+type UserCheckPayload =
+  { client: BotClient; user: User; member?: never } | { client: BotClient; member: GuildMember; user?: never };
+
+export async function checkUserIsLogged(payload: UserCheckPayload) {
+  const { client } = payload;
+  const userId = 'user' in payload && payload.user ? payload.user.id : payload.member.id;
+
+  const exists = db.select({ id: usersTable.id }).from(usersTable).where(eq(usersTable.id, userId)).get();
 
   if (exists) return;
 
-  const guildMember = await (await client.guilds.fetch(env.GUILD_ID)).members.fetch(user.id);
+  let guildMember: GuildMember | null = 'member' in payload && payload.member ? payload.member : null;
+
+  if (!guildMember) {
+    try {
+      const guild = await client.guilds.fetch(env.GUILD_ID);
+      guildMember = await guild.members.fetch(userId);
+    } catch {
+      guildMember = null;
+    }
+  }
 
   const result = await db
     .insert(usersTable)
     .values({
-      id: user.id,
+      id: userId,
       joinedAt: guildMember?.joinedAt ?? undefined,
     })
     .returning();
 
-  if (!result) throw new Error(`Unable to add user ${user.id} to database`);
+  if (!result.length) {
+    throw new Error(`Unable to add user ${userId} to database`);
+  }
 }

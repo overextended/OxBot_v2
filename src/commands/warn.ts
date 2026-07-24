@@ -53,8 +53,8 @@ export default {
       const offenderMember = await guild.members.fetch(offender.id);
       if (offenderMember) offenderMember.timeout(duration, reason);
 
-      await checkUserIsLogged(client, offender);
-      await checkUserIsLogged(client, author);
+      await checkUserIsLogged({ client, user: offender });
+      await checkUserIsLogged({ client, user: author });
 
       await db.insert(warnsTable).values({
         reason: reason,

@@ -27,8 +27,8 @@ export default {
     try {
       await guild.members.kick(offender, reason);
 
-      await checkUserIsLogged(client, offender);
-      await checkUserIsLogged(client, author);
+      await checkUserIsLogged({ client, user: offender });
+      await checkUserIsLogged({ client, user: author });
 
       await db.insert(kicksTable).values({
         reason: reason,
