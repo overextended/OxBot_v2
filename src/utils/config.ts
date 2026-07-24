@@ -10,6 +10,7 @@ const ConfigSchema = z.object({
   roles: z.object({
     moderation: z.array(numericString).default([]),
     blacklisted: z.array(numericString).default([]),
+    member: z.array(numericString).default([]),
   }),
   channels: z.object({
     actionlog: numericString,
