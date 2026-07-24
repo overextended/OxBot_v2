@@ -1,0 +1,10 @@
+{
+  "roles": {
+    "moderation": ["role_id", "role_id"],
+    "blacklisted": ["role_id"]
+  },
+  "channels": {
+    "actionlog": "channel_id",
+    "messagelog": "channel_id"
+  }
+}
