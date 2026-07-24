@@ -6,12 +6,15 @@
   "scripts": {
     "dev": "nub watch src/index.ts",
     "start": "nub src/index.ts",
+    "db": "drizzle-kit",
     "typecheck": "nubx tsc --noEmit",
     "format": "nubx prettier --write \"src/**/*.ts\"",
     "lint": "nubx oxlint src"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^26.1.1",
+    "drizzle-kit": "^0.31.10",
     "oxlint": "^1.74.0",
     "prettier": "^3.9.6",
     "typescript": "^7.0.2"
@@ -24,6 +27,8 @@
     }
   },
   "dependencies": {
-    "discord.js": "^14.27.0"
+    "better-sqlite3": "^13.0.1",
+    "discord.js": "^14.27.0",
+    "drizzle-orm": "^0.45.2"
   }
 }

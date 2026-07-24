@@ -1,10 +1,11 @@
-const requiredEnvVars = ['TOKEN', 'CLIENT_ID', 'GUILD_ID'] as const;
+const requiredEnvVars = ['TOKEN', 'CLIENT_ID', 'GUILD_ID', 'DB_FILE_NAME'] as const;
 
 interface EnvVars {
   TOKEN: string;
   CLIENT_ID: string;
   GUILD_ID: string;
   NODE_ENV: 'development' | 'production';
+  DB_FILE_NAME: string;
 }
 
 const resolveNodeEnv = (): 'development' | 'production' => {
