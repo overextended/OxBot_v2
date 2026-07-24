@@ -8,6 +8,13 @@
       "when": 1784902288101,
       "tag": "0000_eager_squirrel_girl",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1784903956086,
+      "tag": "0001_amusing_whistler",
+      "breakpoints": true
     }
   ]
 }

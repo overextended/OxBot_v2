@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { bansTable, usersTable, warnsTable } from './schema';
+import { bansTable, kicksTable, usersTable, warnsTable } from './schema';
 
 export const userRelations = relations(usersTable, ({ many }) => ({
   bans: many(bansTable),
@@ -13,6 +13,17 @@ export const warnRelations = relations(warnsTable, ({ one }) => ({
   }),
   issuer: one(usersTable, {
     fields: [warnsTable.issuerId],
+    references: [usersTable.id],
+  }),
+}));
+
+export const kickRelations = relations(kicksTable, ({ one }) => ({
+  target: one(usersTable, {
+    fields: [kicksTable.targetId],
+    references: [usersTable.id],
+  }),
+  issuer: one(usersTable, {
+    fields: [kicksTable.issuerId],
     references: [usersTable.id],
   }),
 }));
