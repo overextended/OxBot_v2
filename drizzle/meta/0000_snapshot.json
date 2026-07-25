@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "2f892a61-401a-4d48-9428-67fdce1eb04e",
+  "id": "9c53f32a-6002-4be4-9756-f4e863b1d304",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "bans": {
@@ -25,7 +25,7 @@
           "name": "issuer_id",
           "type": "text(20)",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "target_id": {
@@ -46,6 +46,13 @@
         "revoked_at": {
           "name": "revoked_at",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "revoked_by": {
+          "name": "revoked_by",
+          "type": "text(20)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -93,6 +100,19 @@
           ],
           "onDelete": "restrict",
           "onUpdate": "cascade"
+        },
+        "bans_revoked_by_users_id_fk": {
+          "name": "bans_revoked_by_users_id_fk",
+          "tableFrom": "bans",
+          "tableTo": "users",
+          "columnsFrom": [
+            "revoked_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -120,7 +140,7 @@
           "name": "issuer_id",
           "type": "text(20)",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "target_id": {
@@ -141,6 +161,13 @@
         "revoked_at": {
           "name": "revoked_at",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "revoked_by": {
+          "name": "revoked_by",
+          "type": "text(20)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -182,6 +209,19 @@
           "tableTo": "users",
           "columnsFrom": [
             "target_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        },
+        "kicks_revoked_by_users_id_fk": {
+          "name": "kicks_revoked_by_users_id_fk",
+          "tableFrom": "kicks",
+          "tableTo": "users",
+          "columnsFrom": [
+            "revoked_by"
           ],
           "columnsTo": [
             "id"
@@ -240,7 +280,7 @@
           "name": "issuer_id",
           "type": "text(20)",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "target_id": {
@@ -261,6 +301,13 @@
         "revoked_at": {
           "name": "revoked_at",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "revoked_by": {
+          "name": "revoked_by",
+          "type": "text(20)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -302,6 +349,19 @@
           "tableTo": "users",
           "columnsFrom": [
             "target_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        },
+        "warns_revoked_by_users_id_fk": {
+          "name": "warns_revoked_by_users_id_fk",
+          "tableFrom": "warns",
+          "tableTo": "users",
+          "columnsFrom": [
+            "revoked_by"
           ],
           "columnsTo": [
             "id"

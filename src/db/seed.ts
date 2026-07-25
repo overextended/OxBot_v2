@@ -43,7 +43,7 @@ async function seed() {
     {
       reason: 'Excessive caps usage after verbal warning',
       issuerId: '136784209149689856',
-      targetId: '400000000000000004',
+      targetId: '1519707930440499300',
       issuedAt: new Date('2024-06-10T20:00:00Z'),
     },
   ];
