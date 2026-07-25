@@ -6,6 +6,7 @@
   },
   "channels": {
     "actionlog": "channel_id",
-    "messagelog": "channel_id"
+    "messagelog": "channel_id",
+    "joinleavelog": "channel_id"
   }
 }

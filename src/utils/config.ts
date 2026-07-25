@@ -1,7 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { z } from 'zod';
-import { logger } from './logger';
 
 const CONFIG_PATH = 'config.json';
 
@@ -15,6 +14,7 @@ const ConfigSchema = z.object({
   channels: z.object({
     actionlog: numericString,
     messagelog: numericString,
+    joinleavelog: numericString,
   }),
 });
 export type Config = z.infer<typeof ConfigSchema>;
@@ -47,13 +47,13 @@ export async function loadConfig(): Promise<Config> {
     const fileContent = await fs.readFile(absolutePath, 'utf-8');
     rawData = JSON.parse(fileContent);
   } catch (error) {
-    logger.error(`[Config] ❌ Failed to read or parse config at ${CONFIG_PATH}: ${error}`);
+    console.error(`[Config] ❌ Failed to read or parse config at ${CONFIG_PATH}: ${error}`);
     throw new Error(`Failed to load config file: ${CONFIG_PATH}`);
   }
 
   const parsed = ConfigSchema.safeParse(rawData);
   if (!parsed.success) {
-    logger.error(`[Config] ❌ Invalid configuration structure in ${CONFIG_PATH}:\n`, z.prettifyError(parsed.error));
+    console.error(`[Config] ❌ Invalid configuration structure in ${CONFIG_PATH}:\n`, z.prettifyError(parsed.error));
     throw new Error(`Configuration validation failed for ${CONFIG_PATH}`);
   }
 
@@ -67,18 +67,18 @@ export async function loadConfig(): Promise<Config> {
   const totalCleaned = roleDuplicates + channelDuplicates;
 
   if (totalCleaned > 0) {
-    logger.info(`[Config] 🧹 Cleaned config file (${totalCleaned} duplicate/invalid ID(s) removed)`);
+    console.info(`[Config] 🧹 Cleaned config file (${totalCleaned} duplicate/invalid ID(s) removed)`);
 
     try {
       await fs.writeFile(absolutePath, JSON.stringify(cleanedConfig, null, 2), 'utf-8');
     } catch (error) {
-      logger.error(`[Config] ❌ Failed to write cleaned config back to file: ${error}`);
+      console.error(`[Config] ❌ Failed to write cleaned config back to file: ${error}`);
       throw error;
     }
   }
 
-  logger.info(`[Config] ✅ Config loaded successfully from ${path.basename(CONFIG_PATH)}`);
-  logger.debug(
+  console.info(`[Config] ✅ Config loaded successfully from ${path.basename(CONFIG_PATH)}`);
+  console.debug(
     `[Config] 📊 Active Roles - Moderation: ${cleanedConfig.roles.moderation.length}, Blacklisted: ${cleanedConfig.roles.blacklisted.length}`,
   );
 
