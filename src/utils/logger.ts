@@ -29,7 +29,7 @@ const createLogger = () => {
         const channel = await client.channels.fetch(config.channels.actionlog);
 
         if (!channel || !channel.isSendable()) {
-          logger.error(`[ERROR] Action log channel (${config.channels.actionlog}) is missing or not sendable.`);
+          console.error(`[ERROR] Action log channel (${config.channels.actionlog}) is missing or not sendable.`);
           return;
         }
 
