@@ -22,6 +22,9 @@ export const bansTable = sqliteTable(
     issuedAt: integer('issued_at', { mode: 'timestamp' })
       .default(sql`(unixepoch())`)
       .notNull(),
+    revokedAt: integer('revoked_at', { mode: 'timestamp' }),
+    revokedBy: text('issuer_id', { length: 20 })
+      .references(() => usersTable.id, { onDelete: 'restrict', onUpdate: 'cascade' }),
   },
   (t) => [index('idx_bans_targetid').on(t.targetId), index('idx_bans_issuerid').on(t.issuerId)],
 );
@@ -40,6 +43,9 @@ export const kicksTable = sqliteTable(
     issuedAt: integer('issued_at', { mode: 'timestamp' })
       .default(sql`(unixepoch())`)
       .notNull(),
+    revokedAt: integer('revoked_at', { mode: 'timestamp' }),
+    revokedBy: text('issuer_id', { length: 20 })
+      .references(() => usersTable.id, { onDelete: 'restrict', onUpdate: 'cascade' }),
   },
   (t) => [index('idx_kicks_targetid').on(t.targetId), index('idx_kicks_issuerid').on(t.issuerId)],
 );
@@ -58,6 +64,9 @@ export const warnsTable = sqliteTable(
     issuedAt: integer('issued_at', { mode: 'timestamp' })
       .default(sql`(unixepoch())`)
       .notNull(),
+    revokedAt: integer('revoked_at', { mode: 'timestamp' }),
+    revokedBy: text('issuer_id', { length: 20 })
+      .references(() => usersTable.id, { onDelete: 'restrict', onUpdate: 'cascade' }),
   },
   (t) => [index('idx_warns_targetid').on(t.targetId), index('idx_warns_issuerid').on(t.issuerId)],
 );
