@@ -3,7 +3,7 @@ import type { Command } from '@/types';
 import { logger } from '@/utils/logger';
 import { db } from '@/db';
 import { kicksTable } from '@/db/schema';
-import { checkUserIsLogged } from '@/utils/checks';
+import { checkUserIsLogged, isUserInGuild } from '@/utils/checks';
 
 export default {
   data: new SlashCommandBuilder()
@@ -25,6 +25,16 @@ export default {
     const reason = (reasonOption as string) || 'No reason provided';
 
     try {
+      const offenderMember = isUserInGuild(guild, offender.id);
+
+      if (!offenderMember) {
+        await interaction.reply({
+          content: `User: <@${offender.id}> is not in the guild.`,
+          flags: MessageFlags.Ephemeral,
+        });
+        return;
+      }
+
       await guild.members.kick(offender, reason);
 
       await checkUserIsLogged({ client, user: offender });

@@ -1,9 +1,9 @@
-import { MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import { GuildMember, MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '@/types';
 import { logger } from '@/utils/logger';
 import { db } from '@/db';
 import { warnsTable } from '@/db/schema';
-import { checkUserIsLogged } from '@/utils/checks';
+import { checkUserIsLogged, isUserInGuild } from '@/utils/checks';
 import { eq } from 'drizzle-orm';
 
 async function calculateTimeoutDuration(id: string): Promise<{ seconds: number; minutes: number }> {
@@ -50,8 +50,7 @@ export default {
     const { seconds, minutes } = await calculateTimeoutDuration(offender.id);
 
     try {
-      const offenderMember = await guild.members.fetch(offender.id);
-      if (offenderMember) offenderMember.timeout(seconds, reason);
+      const offenderMember = isUserInGuild(guild, offender.id);
 
       await checkUserIsLogged({ client, user: offender });
       await checkUserIsLogged({ client, user: author });
@@ -86,10 +85,11 @@ export default {
 
       logger.info(
         `[Command Warn] ${offender.username} (${offender.id}) warned by ${author.username} (${author.id})` +
-          ` | Duration: ${minutes}m | Reason: "${reason}"${offenderMember ? ' | Offender was not on the server' : ''}`,
+          ` | Duration: ${minutes}m | Reason: "${reason}"${offenderMember ? '' : ' | Offender was not on the server'}`,
       );
     } catch (error) {
       logger.error('[Command Warn] Failed to execute warn', error);
+
       await interaction.reply({
         content: 'An error occurred while processing the warn.',
         flags: MessageFlags.Ephemeral,

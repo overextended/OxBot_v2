@@ -226,7 +226,7 @@ export default {
       ) {
         await interaction.reply({
           content: `No offenses listed against <@${user.id}>.`,
-          flags: ephemeral ? MessageFlags.Ephemeral : undefined,
+          flags: MessageFlags.Ephemeral,
         });
         return;
       }
@@ -234,7 +234,7 @@ export default {
       const response = await interaction.reply({
         embeds: [buildOverviewEmbed(user, offenseData)],
         components: buildComponents('overview', offenseData),
-        flags: MessageFlags.Ephemeral,
+        flags: ephemeral ? MessageFlags.Ephemeral : undefined,
       });
 
       initializeCollector(response, interaction, user, offenseData);
@@ -242,9 +242,8 @@ export default {
       await logger.logdiscord(client, {
         title: 'Command Used',
         description:
-          `<@${author.id}> (${author.username}) used \`/history\` for <@${user.id}>` + ephemeral
-            ? ` in channel <#${interaction.channelId}>.`
-            : '.',
+          `<@${author.id}> (${author.username}) used \`/history\` for <@${user.id}>` +
+          (ephemeral ? ` in channel <#${interaction.channelId}>.` : '.'),
       });
 
       logger.info(`[Command History] ${author.username} (${author.id}) reviewed ${user.id}'s moderation history.`);

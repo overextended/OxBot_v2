@@ -1,4 +1,4 @@
-import { GuildMember, User } from 'discord.js';
+import type { Guild, GuildMember, User } from 'discord.js';
 import { eq } from 'drizzle-orm';
 import { BotClient } from '@/client';
 import { db } from '@/db';
@@ -37,5 +37,13 @@ export async function checkUserIsLogged(payload: UserCheckPayload) {
 
   if (!result.length) {
     throw new Error(`Unable to add user ${userId} to database`);
+  }
+}
+
+export async function isUserInGuild(guild: Guild, userId: string): Promise<GuildMember | null> {
+  try {
+    return await guild.members.fetch(userId);
+  } catch {
+    return null;
   }
 }

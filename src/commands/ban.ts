@@ -31,7 +31,16 @@ export default {
     const deleteMessageDays = deleteMessageDaysOption || 0;
 
     try {
-      await guild.members.ban(offender, { reason, deleteMessageDays: deleteMessageDays * 24 * 60 * 60 });
+      const ban = await guild.bans.fetch(offender);
+      if (ban) {
+        await interaction.reply({
+          content: `User (<@${offender.id}>) is already banned (reason: ${ban.reason ?? 'No reason provided'}).`,
+          flags: MessageFlags.Ephemeral,
+        });
+        return;
+      }
+
+      await guild.members.ban(offender, { reason, deleteMessageSeconds: deleteMessageDays * 24 * 60 * 60 });
 
       await checkUserIsLogged({ client, user: offender });
       await checkUserIsLogged({ client, user: author });
