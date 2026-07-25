@@ -36,6 +36,13 @@ export default {
         targetId: offender.id,
       });
 
+      await logger.logdiscord(client, {
+        user: offender,
+        title: 'Member Kicked',
+        description: `<@${offender.id}> was kicked by <@${author.id}>.\n**Reason:** ${reason}`,
+        color: 'DarkOrange',
+      });
+
       await interaction.reply({ content: `<@${offender.id}> has been **kicked**. Reason: ${reason}` });
 
       logger.info(

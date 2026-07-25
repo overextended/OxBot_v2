@@ -67,8 +67,15 @@ export default {
         return;
       }
 
+      await logger.logdiscord(client, {
+        title: 'Action Revoked',
+        description:
+          `<@${author.id}> revoked <@${record.targetId}>'s **${action}** (ID: \`${actionId}\`).\n` +
+          `**Original Reason:** ${record.reason}`,
+      });
+
       await interaction.reply({
-        content: `<@${record.targetId}>'s (${record.targetId}) **${action}** (ID: \`${actionId}\`) has been revoked.\n**Original Reason:** ${record.reason}`,
+        content: `<@${record.targetId}>'s **${action}** (ID: \`${actionId}\`) has been revoked.\n**Original Reason:** ${record.reason}`,
         flags: MessageFlags.Ephemeral,
       });
 

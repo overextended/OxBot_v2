@@ -42,6 +42,13 @@ export default {
         targetId: offender.id,
       });
 
+      await logger.logdiscord(client, {
+        user: offender,
+        title: 'Member Banned',
+        description: `<@${offender.id}> (${offender.username}) was banned by <@${author.id}>.\n**Reason:** ${reason}`,
+        color: 'Red',
+      });
+
       await interaction.reply({ content: `<@${offender.id}> has been **banned**. Reason: ${reason}` });
 
       logger.info(

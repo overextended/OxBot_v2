@@ -192,9 +192,12 @@ export default {
     .setName('history')
     .setDescription("View a user's moderation history")
     .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
-    .addUserOption((o) => o.setName('user').setDescription('The user to inspect').setRequired(true)),
+    .addUserOption((o) => o.setName('user').setDescription('The user to inspect').setRequired(true))
+    .addBooleanOption((o) =>
+      o.setName('ephemeral').setDescription('Share response with other users').setRequired(false),
+    ),
 
-  execute: async (interaction) => {
+  execute: async (interaction, client) => {
     const { guild, options, user: author } = interaction;
     if (!guild) {
       await interaction.reply({
@@ -205,6 +208,7 @@ export default {
     }
 
     const user = options.getUser('user', true);
+    const ephemeral = options.getBoolean('ephemeral', false) ?? false;
 
     try {
       const offenseData = await db.query.usersTable.findFirst({
@@ -222,7 +226,7 @@ export default {
       ) {
         await interaction.reply({
           content: `No offenses listed against <@${user.id}>.`,
-          flags: MessageFlags.Ephemeral,
+          flags: ephemeral ? MessageFlags.Ephemeral : undefined,
         });
         return;
       }
@@ -234,6 +238,14 @@ export default {
       });
 
       initializeCollector(response, interaction, user, offenseData);
+
+      await logger.logdiscord(client, {
+        title: 'Command Used',
+        description:
+          `<@${author.id}> (${author.username}) used \`/history\` for <@${user.id}>` + ephemeral
+            ? ` in channel <#${interaction.channelId}>.`
+            : '.',
+      });
 
       logger.info(`[Command History] ${author.username} (${author.id}) reviewed ${user.id}'s moderation history.`);
     } catch (error) {

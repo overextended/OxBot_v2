@@ -6,7 +6,7 @@ import { warnsTable } from '@/db/schema';
 import { checkUserIsLogged } from '@/utils/checks';
 import { eq } from 'drizzle-orm';
 
-async function calculateTimeoutDuration(id: string): Promise<number> {
+async function calculateTimeoutDuration(id: string): Promise<{ seconds: number; minutes: number }> {
   const warnCount = await db.$count(warnsTable, eq(warnsTable.targetId, id));
 
   let minutes: number;
@@ -26,7 +26,7 @@ async function calculateTimeoutDuration(id: string): Promise<number> {
       break;
   }
 
-  return minutes * 60000;
+  return { seconds: minutes * 60000, minutes };
 }
 
 export default {
@@ -47,11 +47,11 @@ export default {
     const offender = options.getUser('user', true);
     const reasonOption = options.getString('reason');
     const reason = (reasonOption as string) || 'No reason provided';
-    const duration = await calculateTimeoutDuration(offender.id);
+    const { seconds, minutes } = await calculateTimeoutDuration(offender.id);
 
     try {
       const offenderMember = await guild.members.fetch(offender.id);
-      if (offenderMember) offenderMember.timeout(duration, reason);
+      if (offenderMember) offenderMember.timeout(seconds, reason);
 
       await checkUserIsLogged({ client, user: offender });
       await checkUserIsLogged({ client, user: author });
@@ -66,16 +66,27 @@ export default {
         ? ''
         : '\n*Note: User is not in the server, but the warning was logged to their profile.*';
 
+      await logger.logdiscord(client, {
+        user: offender,
+        title: 'Member Warned',
+        description:
+          `<@${offender.id}> was warned by <@${author.id}>.\n` +
+          `**Reason:** ${reason}\n` +
+          `**Duration:** ${minutes} minutes\n` +
+          memberStatus,
+        color: minutes <= 10 ? 'Orange' : 'DarkRed',
+      });
+
       await interaction.reply({
         content:
           `<@${offender.id}> has been **warned**. Reason: *${reason}*.\n` +
-          `Timeout applied: **${duration}m**.${memberStatus}`,
+          `Timeout applied: **${minutes}m**.${memberStatus}`,
         flags: MessageFlags.Ephemeral,
       });
 
       logger.info(
         `[Command Warn] ${offender.username} (${offender.id}) warned by ${author.username} (${author.id})` +
-          ` | Duration: ${duration}m | Reason: "${reason}"${offenderMember ? ' | Offender was not on the server' : ''}`,
+          ` | Duration: ${minutes}m | Reason: "${reason}"${offenderMember ? ' | Offender was not on the server' : ''}`,
       );
     } catch (error) {
       logger.error('[Command Warn] Failed to execute warn', error);
