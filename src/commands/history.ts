@@ -48,9 +48,20 @@ function buildDetailEmbed(user: User, type: 'warns' | 'kicks' | 'bans', offenseD
   const titleType = type.charAt(0).toUpperCase() + type.slice(1);
 
   const description = records
-    .map((item, idx) => {
-      const ts = Math.floor(new Date(item.issuedAt).getTime() / 1000);
-      return `**${idx + 1}.** <t:${ts}:f>\n> **Reason:** ${item.reason}\n> **Issuer:** <@${item.issuerId}>`;
+    .map((item) => {
+      const issuedTs = Math.floor(new Date(item.issuedAt).getTime() / 1000);
+
+      let entry =
+        `**ID:** \`${item.id}\`\n` +
+        `> **Reason:** ${item.reason}\n` +
+        `> **Issued** on <t:${issuedTs}:d> by <@${item.issuerId}>`;
+
+      if (item.revokedAt && item.revokedBy) {
+        const revokedTs = Math.floor(new Date(item.revokedAt).getTime() / 1000);
+        entry += `\n> **Revoked** on <t:${revokedTs}:d> by <@${item.revokedBy}>`;
+      }
+
+      return entry;
     })
     .join('\n\n');
 
