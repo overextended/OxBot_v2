@@ -170,8 +170,20 @@ function initializeCollector(
 
   collector.on('end', async () => {
     try {
-      await interaction.editReply({ components: [] });
-    } catch {}
+      const message = await interaction.fetchReply();
+      const existingEmbed = message.embeds[0];
+
+      if (existingEmbed) {
+        const updatedEmbed = EmbedBuilder.from(existingEmbed).setFooter({
+          text: 'Please rerun the command to use again.',
+        });
+
+        await interaction.editReply({
+          embeds: [updatedEmbed],
+          components: [],
+        });
+      }
+    } catch (error) {}
   });
 }
 
