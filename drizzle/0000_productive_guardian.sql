@@ -47,4 +47,5 @@ CREATE TABLE `warns` (
 );
 --> statement-breakpoint
 CREATE INDEX `idx_warns_targetid` ON `warns` (`target_id`);--> statement-breakpoint
-CREATE INDEX `idx_warns_issuerid` ON `warns` (`issuer_id`);
+CREATE INDEX `idx_warns_issuerid` ON `warns` (`issuer_id`);--> statement-breakpoint
+INSERT INTO `users` (id, joined_at) VALUES ('1', 0);
