@@ -76,3 +76,18 @@ export const warnsTable = sqliteTable(
   },
   (t) => [index('idx_warns_targetid').on(t.targetId), index('idx_warns_issuerid').on(t.issuerId)],
 );
+
+export const guildInvitesTable = sqliteTable(
+  'guildInvites',
+  {
+    id: integer().primaryKey({ autoIncrement: true }),
+    name: text().notNull(),
+    invite: text().notNull().unique(),
+    addedAt: integer('added_at', { mode: 'timestamp' }),
+    addedBy: text('added_by', { length: 20 }).references(() => usersTable.id, {
+      onDelete: 'restrict',
+      onUpdate: 'cascade',
+    }),
+  },
+  (t) => [index('idx_guildinvites_name').on(t.name)],
+);
