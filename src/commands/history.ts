@@ -52,7 +52,7 @@ function buildDetailEmbed(user: User, type: 'warns' | 'kicks' | 'bans', offenseD
       const issuedTs = Math.floor(new Date(item.issuedAt).getTime() / 1000);
 
       let entry =
-        `**ID:** \`${item.id}\`\n` +
+        `**ID:** \`${item.id}\`${item?.soft ? ' - Soft Ban' : ''}\n` +
         `> **Reason:** ${item.reason}\n` +
         `> **Issued** on <t:${issuedTs}:d> by <@${item.issuerId}>`;
 
