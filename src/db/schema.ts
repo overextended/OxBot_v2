@@ -12,6 +12,7 @@ export const bansTable = sqliteTable(
   'bans',
   {
     id: integer().primaryKey({ autoIncrement: true }),
+    soft: integer({ mode: 'boolean' }).default(false),
     reason: text().notNull(),
     issuerId: text('issuer_id', { length: 20 })
       .notNull()

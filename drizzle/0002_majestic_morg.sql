@@ -1,0 +1,1 @@
+ALTER TABLE `bans` ADD `soft` integer DEFAULT false;

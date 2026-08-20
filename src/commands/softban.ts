@@ -57,6 +57,7 @@ export default {
       await checkUserIsLogged({ client, user: author });
 
       await db.insert(bansTable).values({
+        soft: true,
         reason: reason,
         issuerId: author.id,
         targetId: offender.id,
