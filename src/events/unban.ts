@@ -14,6 +14,10 @@ export default {
         return logger.info('[Event Member Unban] Executor ID or target ID is missing from the audit log entry.');
       }
 
+      if (auditLogEntry.executorId === client.user.id && auditLogEntry.reason.includes('[Softban]')) {
+        return;
+      }
+
       // skip logging for VVarden bans (in case it's used again)
       if (auditLogEntry.executorId === '874059310869655662') return;
 
