@@ -13,7 +13,7 @@ export async function revokeAction(action: string, id: number, authorId: string)
     ban: bansTable,
   } as const;
 
-  const targetTable = tableMap[action];
+  const targetTable = tableMap[action as keyof typeof tableMap];
   if (!targetTable) return null;
 
   const [updatedRecord] = await db

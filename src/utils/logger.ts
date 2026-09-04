@@ -1,7 +1,7 @@
 import { BotClient } from '@/client';
 import { env } from '@/env';
 import config from './config';
-import { ColorResolvable, EmbedBuilder, MessagePayload, User } from 'discord.js';
+import { ColorResolvable, EmbedBuilder, User } from 'discord.js';
 
 const createLogger = () => {
   const isDevelopment = env.NODE_ENV === 'development';

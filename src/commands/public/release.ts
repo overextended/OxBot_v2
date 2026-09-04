@@ -1,4 +1,4 @@
-import { EmbedBuilder, MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '@/types';
 
 const BASE_URL = 'https://github.com/overextended/{resource}/releases/latest/download/{resource}.zip';
@@ -41,7 +41,7 @@ export default {
               `**Building the source code**\n` +
               `Alternatively, you can build/compile the source code yourself, though this is not recommended unless you know what you are doing.`,
           )
-          .setThumbnail(client.user.displayAvatarURL({ size: 128, extension: 'jpeg' })),
+          .setThumbnail(client.user!.displayAvatarURL({ size: 128, extension: 'jpeg' })),
       ],
     });
   },

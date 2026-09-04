@@ -37,7 +37,7 @@ export default {
 
     const offender = options.getUser('user', true);
     const reasonOption = options.getString('reason');
-    const deleteMessageOption = options.getInteger('delete_message');
+    const deleteMessageOption = options.getInteger('delete_message', true);
 
     const reason = (reasonOption as string) || 'No reason provided';
 

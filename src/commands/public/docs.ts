@@ -1,4 +1,4 @@
-import { EmbedBuilder, MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '@/types';
 
 const BASE_URL = 'https://overextended.dev/docs/';
@@ -31,7 +31,7 @@ export default {
           .setTitle(`Docs for: ${resource}`)
           .setColor('#c5a279')
           .setDescription(`Please read the documentation thoroughly and carefully.\n\n> :link: ${url}`)
-          .setThumbnail(client.user.displayAvatarURL({ size: 128, extension: 'jpeg' })),
+          .setThumbnail(client.user!.displayAvatarURL({ size: 128, extension: 'jpeg' })),
       ],
     });
   },

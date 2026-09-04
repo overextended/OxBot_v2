@@ -13,7 +13,7 @@ export default {
       o.setName('guild').setDescription('The relevant guild').setRequired(true).setAutocomplete(true),
     ),
 
-  execute: async (interaction, client) => {
+  execute: async (interaction) => {
     const { options } = interaction;
 
     const guild = options.getString('guild', true);

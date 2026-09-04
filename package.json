@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nub watch src/index.ts",
     "start": "nub src/index.ts",
+    "commands:deploy": "nub src/scripts/deploy.ts",
     "db:seed": "nub src/db/seed.ts",
     "typecheck": "nubx tsc --noEmit",
     "format": "nubx prettier --write \"src/**/*.ts\"",

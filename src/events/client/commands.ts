@@ -19,6 +19,15 @@ export default {
         return;
       }
 
+      if (!command.execute) {
+        logger.warn('[Command Handler] Command does not have an execute callback:', commandName);
+        interaction.reply({
+          content: 'Borked command',
+          flags: MessageFlags.Ephemeral,
+        });
+        return;
+      }
+
       try {
         await command.execute(interaction, client);
       } catch (err) {

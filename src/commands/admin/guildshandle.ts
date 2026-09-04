@@ -110,7 +110,9 @@ export default {
 
           await db.update(guildInvitesTable).set(updateData).where(eq(guildInvitesTable.id, id));
 
-          logger.info(`[Command Handle Guild Invites] ${author.username} (${author.id}) updated invite (${id}) data: ${JSON.stringify(updateData)}`);
+          logger.info(
+            `[Command Handle Guild Invites] ${author.username} (${author.id}) updated invite (${id}) data: ${JSON.stringify(updateData)}`,
+          );
 
           await interaction.reply({
             content: `Successfully updated invite ID **${id}**.`,
@@ -137,7 +139,9 @@ export default {
             return;
           }
 
-          logger.info(`[Command Handle Guild Invites] ${author.username} (${author.id}) deleted invite ID ${id} - ${deleted[0].name}`);
+          logger.info(
+            `[Command Handle Guild Invites] ${author.username} (${author.id}) deleted invite ID ${id} - ${deleted[0].name}`,
+          );
 
           await interaction.reply({
             content: `Successfully deleted invite **${deleted[0].name}** (ID: \`${id}\`).`,
