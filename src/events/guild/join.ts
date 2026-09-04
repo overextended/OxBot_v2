@@ -3,7 +3,6 @@ import { BotEvent } from '@/types';
 import { checkUserIsLogged } from '@/utils/checks';
 import config from '@/utils/config';
 import { logger } from '@/utils/logger';
-import { MessageFlags } from 'discord.js';
 
 export default {
   name: 'guildMemberAdd',

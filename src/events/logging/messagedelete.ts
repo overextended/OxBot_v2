@@ -1,9 +1,7 @@
-import { env } from '@/env';
 import { BotEvent } from '@/types';
-import { checkUserIsLogged } from '@/utils/checks';
 import config from '@/utils/config';
 import { logger } from '@/utils/logger';
-import { Attachment, EmbedBuilder, MessageFlags, TextChannel } from 'discord.js';
+import { Attachment, EmbedBuilder } from 'discord.js';
 
 export default {
   name: 'messageDelete',

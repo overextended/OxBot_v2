@@ -92,3 +92,13 @@ export const guildInvitesTable = sqliteTable(
   },
   (t) => [index('idx_guildinvites_name').on(t.name)],
 );
+
+export const scamImageHashesTable = sqliteTable('scamImageHashes', {
+  id: integer().primaryKey({ autoIncrement: true }),
+  hash: text().notNull().unique(),
+  addedAt: integer('added_at', { mode: 'timestamp' }),
+  addedBy: text('added_by', { length: 20 }).references(() => usersTable.id, {
+    onDelete: 'restrict',
+    onUpdate: 'cascade',
+  }),
+});

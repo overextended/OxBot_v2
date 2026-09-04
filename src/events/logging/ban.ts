@@ -1,7 +1,7 @@
 import { db } from '@/db';
 import { bansTable } from '@/db/schema';
 import { BotEvent } from '@/types';
-import { checkUserIsLogged, isUserInGuild } from '@/utils/checks';
+import { checkUserIsLogged } from '@/utils/checks';
 import config from '@/utils/config';
 import { logger } from '@/utils/logger';
 import { AuditLogEvent, EmbedBuilder } from 'discord.js';
@@ -18,7 +18,7 @@ export default {
       }
 
       // skip when bot executes it as it'll already be logged by the command
-      if (auditLogEntry.executorId === client.user.id) return;
+      if (auditLogEntry.executorId === client.user?.id) return;
       // skip logging for VVarden bans (in case it's used again)
       if (auditLogEntry.executorId === '874059310869655662') return;
 

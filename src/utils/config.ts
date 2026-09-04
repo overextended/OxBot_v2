@@ -6,6 +6,9 @@ const CONFIG_PATH = 'config.json';
 
 const numericString = z.string().regex(/^\d+$/, 'Value must be a numeric string');
 const ConfigSchema = z.object({
+  antiscam: z.object({
+    threshold: z.int().default(5),
+  }),
   roles: z.object({
     moderation: z.array(numericString).default([]),
     blacklisted: z.array(numericString).default([]),

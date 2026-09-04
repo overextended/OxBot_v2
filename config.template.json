@@ -1,4 +1,7 @@
 {
+  "antiscam": {
+    "threshold": 5
+  },
   "roles": {
     "moderation": ["role_id", "role_id"],
     "blacklisted": ["role_id"],

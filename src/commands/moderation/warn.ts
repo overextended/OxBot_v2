@@ -1,4 +1,4 @@
-import { GuildMember, MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import { MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import type { Command } from '@/types';
 import { logger } from '@/utils/logger';
 import { db } from '@/db';
@@ -47,13 +47,18 @@ export default {
     const offender = options.getUser('user', true);
     const reasonOption = options.getString('reason');
     const reason = (reasonOption as string) || 'No reason provided';
+
     const { seconds, minutes } = await calculateTimeoutDuration(offender.id);
 
     try {
-      const offenderMember = isUserInGuild(guild, offender.id);
+      const offenderMember = await isUserInGuild(guild, offender.id);
 
       await checkUserIsLogged({ client, user: offender });
       await checkUserIsLogged({ client, user: author });
+
+      if (offenderMember) {
+        await offenderMember.timeout(seconds, reason);
+      }
 
       await db.insert(warnsTable).values({
         reason: reason,

@@ -1,6 +1,6 @@
 // relations.ts
 import { relations } from 'drizzle-orm';
-import { bansTable, guildInvitesTable, kicksTable, usersTable, warnsTable } from './schema';
+import { bansTable, guildInvitesTable, kicksTable, scamImageHashesTable, usersTable, warnsTable } from './schema';
 
 export const userRelations = relations(usersTable, ({ many }) => ({
   bans: many(bansTable, { relationName: 'targetUserBans' }),
@@ -16,6 +16,8 @@ export const userRelations = relations(usersTable, ({ many }) => ({
   warnsRevoked: many(warnsTable, { relationName: 'revokedUserWarns' }),
 
   invitesAdded: many(guildInvitesTable, { relationName: 'addedUserGuildInvites' }),
+
+  scamImages: many(scamImageHashesTable, { relationName: 'addedScamImageHashes' }),
 }));
 
 export const warnRelations = relations(warnsTable, ({ one }) => ({

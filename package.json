@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nub watch src/index.ts",
     "start": "nub src/index.ts",
+    "commands:deploy": "nub src/scripts/deploy.ts",
     "db:seed": "nub src/db/seed.ts",
     "typecheck": "nubx tsc --noEmit",
     "format": "nubx prettier --write \"src/**/*.ts\"",
@@ -30,6 +31,7 @@
     "better-sqlite3": "^13.0.1",
     "discord.js": "^14.27.0",
     "drizzle-orm": "^0.45.2",
+    "imghash": "^1.1.4",
     "zod": "^4.4.3"
   }
 }

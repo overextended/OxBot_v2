@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "6f2ce646-dfd0-4dd2-9cc7-5de5cdf5fa48",
-  "prevId": "ed4fad2f-1ed4-4e4f-aac1-8859fe036071",
+  "id": "77eac7b8-ca32-488a-bfa3-673743c33159",
+  "prevId": "6f2ce646-dfd0-4dd2-9cc7-5de5cdf5fa48",
   "tables": {
     "bans": {
       "name": "bans",
@@ -304,6 +304,66 @@
           "tableTo": "users",
           "columnsFrom": [
             "revoked_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "scamImageHashes": {
+      "name": "scamImageHashes",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "hash": {
+          "name": "hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "added_at": {
+          "name": "added_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "added_by": {
+          "name": "added_by",
+          "type": "text(20)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "scamImageHashes_hash_unique": {
+          "name": "scamImageHashes_hash_unique",
+          "columns": [
+            "hash"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "scamImageHashes_added_by_users_id_fk": {
+          "name": "scamImageHashes_added_by_users_id_fk",
+          "tableFrom": "scamImageHashes",
+          "tableTo": "users",
+          "columnsFrom": [
+            "added_by"
           ],
           "columnsTo": [
             "id"

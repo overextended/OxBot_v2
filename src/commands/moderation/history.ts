@@ -183,7 +183,7 @@ function initializeCollector(
           components: [],
         });
       }
-    } catch (error) {}
+    } catch {}
   });
 }
 

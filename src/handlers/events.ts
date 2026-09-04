@@ -8,14 +8,20 @@ import type { BotEvent } from '@/types';
 export const loadEvents = async (client: BotClient): Promise<void> => {
   const currentDir = dirname(fileURLToPath(import.meta.url));
   const dir = join(currentDir, '..', 'events');
-  const files = readdirSync(dir).filter((f) => f.endsWith('.ts'));
+
+  const entries = readdirSync(dir, { recursive: true }) as string[];
+
+  const files = entries
+    .filter((file) => file.endsWith('.ts') || file.endsWith('.js'))
+    .map((file) => [file, join(dir, file)]);
 
   let loadedCount = 0;
 
-  for (const file of files) {
-    const filePath = join(dir, file);
+  for (const entry of files) {
+    const [file, path] = entry;
+
     try {
-      const mod = await import(pathToFileURL(filePath).href);
+      const mod = await import(pathToFileURL(path).href);
       const event: BotEvent<any> = mod.default;
 
       if (!event?.name || !event?.execute) {
